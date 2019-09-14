@@ -19,17 +19,20 @@ int		main(int argc, char **argv)
 	int		gnl;
 	char	**line;
 
-	if(!(line = (char**)malloc(sizeof(char*) * 10)))
-	{
-		printf("OK\n");
+	printf("OK\n");
+	if(!(line = (char**)malloc(sizeof(char*) * 2)))
 		return (1);
-	}
+	printf("OK\n");
 	fd = open(argv[1], O_RDONLY);
+	printf("OK\n");
 	gnl = get_next_line(fd, line);
 	printf("%d\n", gnl);
 	printf("%s\n", line[0]);
-	printf("%s\n", line[1]);
-	printf("%s\n", line[2]);
-	printf("%s\n", line[3]);
+	//line++;
+	//printf("%d\n", gnl);
+	//gnl = get_next_line(fd, line);
+	//printf("%s\n", line[1]);
+	//printf("%s\n", line[2]);
+	//printf("%s\n", line[3]);
 	return (0);
 }
