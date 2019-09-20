@@ -22,7 +22,14 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
-//# include "../libft.h"
+//# include "../libft/libft.h"
+
+typedef struct		s_struct
+{
+	int				fd;
+	char			*content;
+	struct s_buf	*next;
+}					t_struct;
 
 int		get_next_line(int const fd, char **line);
 
