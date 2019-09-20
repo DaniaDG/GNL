@@ -20,7 +20,7 @@ int		main(int argc, char **argv)
 	char	**line;
 
 	printf("OK\n");
-	if(!(line = (char**)malloc(sizeof(char*) * 2)))
+	if(!(line = (char**)malloc(sizeof(char*))))
 		return (1);
 	printf("OK\n");
 	fd = open(argv[1], O_RDONLY);
