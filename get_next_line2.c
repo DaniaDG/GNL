@@ -27,45 +27,47 @@ char	*get_line(char **line, char *buf)
 int		get_next_line(const int fd, char **line)
 {
 	size_t				ret;
-	int					len = 0;
+	size_t				len = 0;
+	char				*tmp;
+	char				buf[BUFF_SIZE + 1];
 	static t_struct		*list;
 
-	if (fd < 0 || !line || BUFF_SIZE < 1 || read(fd, list->buf, 0) < 0)
+	if (fd < 0 || !line || BUFF_SIZE < 1 || read(fd, buf, 0) < 0)
 		return (-1);
 	*line = ft_strnew(0);
 	if (!list)
 	{
 		list = (t_struct*)malloc(sizeof(t_struct));
+		list->str = NULL;
 		list->fd = fd;
-		list->i = 0;
 	}
-	if (list->i != 0 && list->buf[list->i] == '\n')
-		{
-			list->i++;
-			return (1);
-		}
-	if (list->i != 0)
+	while (list->str)
 	{
-		len = ft_strchr(&list->buf[list->i], '\n') - &list->buf[list->i];
-		list->buf[list->i] = '\0';
-		*line = get_line(line, &list->buf[list->i + len]);
-		if ((list->i = list->i + len) > BUFF_SIZE)
-			list->i = 0;
-	}
-	while ((ret = read(fd, list->buf, BUFF_SIZE)))
-	{
-		if (ret == 0)
-			return (0);
-		list->buf[ret] = '\0';
-		if (ft_strchr(list->buf, '\n') == NULL)
-			*line = get_line(line, &list->buf[list->i]);
+		if (ft_strchr(list->str, '\n') == NULL)
+			len = ft_strlen(list->str);
 		else
-		{
-			len = ft_strchr(list->buf, '\n') - list->buf;
-			list->buf[len] = '\0';
-			*line = get_line(line, &list->buf[list->i]);
-			list->i = len + 1;
-			break ;
+			len = ft_strchr(list->str, '\n') - list->str;
+		*line = (char*)realloc(&line, ft_strlen(line) + len + 1);
+		*line = ft_strncat(&line, list->str, len);
+		tmp = ft_strdup(&list->str[len + 1]);
+		free(list->str);
+		list->str = ft_strdup(tmp);
+		free(tmp);
+	}
+
+	while ((ret = read(fd, buf, BUFF_SIZE)) && ())
+	{
+		buf[ret] = '\0';
+		if (ft_strchr(buf, '\n') == NULL)
+			len = ft_strlen(buf);
+		else
+			len = ft_strchr(buf, '\n') - buf;
+		*line = (char*)realloc(&line, ft_strlen(line) + len + 1);
+		*line = ft_strncat(&line, buf, len);
+		tmp = ft_strdup(&buf[len + 1]);
+		free(list->str);
+		list->str = ft_strdup(tmp);
+		free(tmp);
 		}
 	}
 	return (1);	
