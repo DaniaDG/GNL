@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 32
+# define BUFF_SIZE 16
 # define FD_MAXSET 4864
 
 # include <sys/types.h>
@@ -27,6 +27,7 @@
 typedef struct		s_struct
 {
 	int				fd;
+	size_t			i;
 	char			buf[BUFF_SIZE];
 	struct s_buf	*next;
 }					t_struct;
