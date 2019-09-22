@@ -25,21 +25,39 @@ int		main(int argc, char **argv)
 
 	gnl = get_next_line(fd, &line[0]);
 	printf("RESULT = %s\n", line[0]);
+	printf("gnl = %d\n\n", gnl);
+
 	gnl = get_next_line(fd, &line[1]);
 	printf("RESULT = %s\n", line[1]);
+	printf("gnl = %d\n\n", gnl);
+
 	gnl = get_next_line(fd, &line[2]);
 	printf("RESULT = %s\n", line[2]);
+	printf("gnl = %d\n\n", gnl);
+
 	gnl = get_next_line(fd, &line[3]);
 	printf("RESULT = %s\n", line[3]);
+	printf("gnl = %d\n\n", gnl);
+
 	gnl = get_next_line(fd, &line[4]);
 	printf("RESULT = %s\n", line[4]);
+	printf("gnl = %d\n\n", gnl);
+
 	gnl = get_next_line(fd, &line[5]);
 	printf("RESULT = %s\n", line[5]);
+	printf("gnl = %d\n\n", gnl);
+
 	gnl = get_next_line(fd, &line[6]);
 	printf("RESULT = %s\n", line[6]);
+	printf("gnl = %d\n\n", gnl);
+
 	gnl = get_next_line(fd, &line[7]);
 	printf("RESULT = %s\n", line[7]);
+	printf("gnl = %d\n\n", gnl);
+
 	gnl = get_next_line(fd, &line[8]);
 	printf("RESULT = %s\n", line[8]);
+	printf("gnl = %d\n\n", gnl);
+	
 	return (0);
 }

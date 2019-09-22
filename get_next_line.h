@@ -27,7 +27,7 @@
 typedef struct		s_struct
 {
 	int				fd;
-	size_t			i;
+	//size_t			i;
 	char			*str;
 	struct s_buf	*next;
 }					t_struct;
