@@ -13,46 +13,36 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-char	*get_line(char **line, char *buf)
-{
-	char	*tmp;
-
-	tmp = ft_strdup(*line);
-	free(*line);
-	*line = ft_strjoin(tmp, buf);
-	free(tmp);
-	return (*line);
-}
-
 int		check_str(char **line, char **str)
 {
-	int		len;
-	char	*tmp;
+	size_t		len;
+	size_t		i;
+	char		*tmp;
 
-	if (!(*str))
+	printf("check str BEGIN\n");
+	printf("check str: str = %s\n", *str);
+	if (*str == NULL)
 		return (0);
+	printf("check str: str = %s\n", *str);
 	if (ft_strchr(*str, '\n') == NULL)
 	{
-		*line = get_line(line, *str);
-		//printf("if: check line = %s\n", *line);
+		*line = ft_strdup(*str);
+		printf("check str if: line = %s\n", *line);
 		free(*str);
-		//printf("free str OK\n");
-		return (0);
+		return (2);
 	}
 	else
 	{
-		//printf("check str = %s\n", *str);
-		len = ft_strchr(*str, '\n') - *str;
-		(*str)[len] = '\0';
-		//printf("put 0terminator into str = %s\n", *str);
-		*line = get_line(line, *str);
-		//printf("else: check line = %s\n", *line);
-		tmp = ft_strdup(&(*str)[len + 1]);
-		//printf("else: check tmp = %s\n", tmp);
+		i = ft_strchr(*str, '\n') - *str;
+		len = ft_strlen(*line) + i + 1;
+		*line = (char*)realloc(*line, len);
+		(*line)[len] = '\0';
+		*line = ft_strncpy(*line, *str, i);
+		printf("check str else: line = %s\n", *line);
+		tmp = ft_strdup(&(*str)[i + 1]);
 		free(*str);
-		//printf("free str OK\n");
 		*str = ft_strdup(tmp);
-		//printf("check str = %s\n", *str);
+		printf("check str else: str = %s\n", *str);
 		free(tmp);
 	}
 	if (*line == NULL)
@@ -60,27 +50,32 @@ int		check_str(char **line, char **str)
 	return (1);
 }
 
-int		check_buf(char **line, char *buf, int ret, char	**str)
+int		check_buf(char **line, char *buf, int ret, t_struct **list)
 {
-	int		len;
+	size_t		len;
+	size_t		i;
 
-	if (!ret)
-		return (0);
+	printf("check buf BEGIN\n");
+	//if (!ret)
+	//	return (0);
 	if (ft_strchr(buf, '\n') == NULL)
-		{
-			*line = get_line(line, buf);
-			//printf("while line = %s\n", *line);
-		}
-		else
-		{
-			len = ft_strchr(buf, '\n') - buf;
-			buf[len] = '\0';
-			*line = get_line(line, buf);
-			//printf("while line = %s\n", *line);
-			*str = ft_strdup(&buf[len + 1]);
-			//printf("while str = %s\n", list->str);
-		}
-	if (*line == NULL)
+	{
+		*line = ft_strdup(buf);
+		printf("check buf if: line = %s\n", *line);
+		return (0);
+	}
+	else
+	{
+		i = ft_strchr(buf, '\n') - buf;
+		len = ft_strlen(*line) + i + 1;
+		*line = (char*)realloc(*line, len);
+		(*line)[len] = '\0';
+		*line = ft_strncat(*line, buf, i);
+		printf("check buf else: line = %s\n", *line);
+		(*list)->str = ft_strdup(&buf[i + 1]);
+		printf("check buf else: str = %s\n", (*list)->str);
+	}
+	if (*list == NULL)
 		return (-1);
 	return (1);
 }
@@ -90,24 +85,34 @@ int		get_next_line(const int fd, char **line)
 	size_t				ret;
 	int					a;
 	char				buf[BUFF_SIZE + 1];
-	static char			*str;
+	static t_struct		*list;
 	//t_struct			*curr_list;
 
 	if (fd < 0 || !line || BUFF_SIZE < 1 || read(fd, buf, 0) < 0)
 		return (-1);
-	if (!(*line = ft_strnew(0)))
-		return (-1);
-	if (!str)
-		str = (char*)malloc(sizeof(char));
-	if ((a = check_str(line, &str)))
+	*line = ft_strnew(0);
+	if (!list)
+	{
+		if (!(list = (t_struct*)malloc(sizeof(t_struct))))
+			return (-1);
+		list->str = NULL;
+		list->fd = fd;
+	}
+	a = check_str(line, &list->str);
+	if (a != 0 && a != 2)
 		return (a);
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
-		if ((a = check_buf(line, buf, ret, &str)))
+		if ((a = check_buf(line, buf, ret, &list)))
+		{
+			printf("BUFF: %s\n", buf);
 			return (a);
+		}
 		if (ft_strchr(buf, '\n') != NULL)
 			break ;
 	}
+	if (a == 0 && ret == 0)
+		return (1);
 	return (a);	
 }

@@ -21,6 +21,21 @@ int		main(int argc, char **argv)
 
 	if(!(line = (char**)malloc(sizeof(char*)*9)))
 		return (1);
+	if (argc == 1)
+	{
+		gnl = get_next_line(fd, &line[0]);
+		printf("RESULT = %s\n", line[0]);
+		printf("gnl = %d\n\n", gnl);
+
+		gnl = get_next_line(fd, &line[1]);
+		printf("RESULT = %s\n", line[1]);
+		printf("gnl = %d\n\n", gnl);
+
+		gnl = get_next_line(fd, &line[2]);
+		printf("RESULT = %s\n", line[2]);
+		printf("gnl = %d\n\n", gnl);
+		return (0);
+	}
 	fd = open(argv[1], O_RDONLY);
 
 	gnl = get_next_line(fd, &line[0]);
@@ -58,6 +73,6 @@ int		main(int argc, char **argv)
 	gnl = get_next_line(fd, &line[8]);
 	printf("RESULT = %s\n", line[8]);
 	printf("gnl = %d\n\n", gnl);
-	
+
 	return (0);
 }
