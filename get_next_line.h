@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 32
+# define BUFF_SIZE 9999
 # define FD_MAXSET 4864
 
 # include <sys/types.h>
@@ -22,15 +22,15 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "../libft/libft.h"
+# include "libft/libft.h"
 
 typedef struct		s_struct
 {
 	int				fd;
 	char			*str;
-	struct s_buf	*next;
+	struct s_struct	*next;
 }					t_struct;
 
-int		get_next_line(int const fd, char **line);
+int					get_next_line(int const fd, char **line);
 
 #endif

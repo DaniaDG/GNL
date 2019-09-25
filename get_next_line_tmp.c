@@ -24,10 +24,10 @@ static int		read_from_str(char **line, char **str)
 		return (-1);
 	if (!(tmp = ft_strdup(&(*str)[i + 1])))
 		return (-1);
-	ft_memdel((void**)str);
+	free(*str);
 	if (!(*str = ft_strdup(tmp)))
 		return (-1);
-	ft_memdel((void**)&tmp);
+	free(tmp);
 	return (1);
 }
 
@@ -39,38 +39,73 @@ static char		*add_buff(int fd, char **str, int *ret)
 	*ret = read(fd, buf, BUFF_SIZE);
 	buf[*ret] = '\0';
 	tmp = ft_strdup(*str);
-	ft_memdel((void**)str);
+	free(*str);
 	*str = ft_strjoin(tmp, buf);
-	ft_memdel((void**)&tmp);
+	free(tmp);
 	return (*str);
 }
 
-int				get_last_line(char **line, char **str)
+int				get_last_line(char **line, t_struct **current)
 {
-	if (!(*line = ft_strdup(*str)))
+	t_struct	*tmp;
+
+	if (!(*line = ft_strdup((*current)->str)))
 		return (-1);
-	ft_memdel((void**)str);
+	free((*current)->str);
+	tmp = (*current)->next;
+	free(*current);
+	*current = tmp;
 	return (1);
+}
+
+static t_struct		*find_fd(t_struct *begin_list, int fd)
+{
+	t_struct	*list;
+
+	list = begin_list;
+	while (list)
+	{
+		if (list->fd == fd)
+			return (list);
+		list = list->next;
+	}
+	if (!(list = (t_struct*)malloc(sizeof(t_struct))))
+		return (NULL);
+	list->fd = fd;
+	list->str = NULL;
+	list->next = NULL;
+	return (list);
 }
 
 int				get_next_line(const int fd, char **line)
 {
 	int				ret;
-	static char		*str[FD_MAXSET];
+	static t_struct	*begin_list;
+	t_struct		*current;
 
 	ret = 1;
 	if (!line || fd < 0 || BUFF_SIZE < 1 || read(fd, NULL, 0) < 0)
 		return (-1);
+	if (!begin_list)
+	{
+		if (!(begin_list = (t_struct*)malloc(sizeof(t_struct))))
+			return (-1);
+		begin_list->fd = fd;
+		begin_list->str = NULL;
+		begin_list->next = NULL;
+	}
+	if (!(current = find_fd(begin_list, fd)))
+		return (-1);
 	while (ret > 0)
 	{
-		if (!str[fd])
-			str[fd] = ft_strnew(0);
-		if (ft_strchr(str[fd], '\n'))
-			return (read_from_str(line, &str[fd]));
-		if (!(str[fd] = add_buff(fd, &str[fd], &ret)))
+		if (!(current->str))
+			current->str = ft_strnew(0);
+		if (ft_strchr(current->str, '\n'))
+			return (read_from_str(line, &(current->str)));
+		if (!(current->str = add_buff(fd, &(current->str), &ret)))
 			return (-1);
 	}
-	if (!ret && ft_strlen(str[fd]))
-		return (get_last_line(line, &str[fd]));
+	if (!ret && ft_strlen(current->str))
+		return (get_last_line(line, &current));
 	return (0);
 }

@@ -15,12 +15,13 @@
 
 int		main(int argc, char **argv)
 {
-	int		fd;
+	int		fd1;
+	int		fd2;
 	int		gnl;
 	char	*line;
 
 
-	if (argc == 1)
+	/*if (argc == 1)
 	{
 		gnl = get_next_line(fd, &line);
 		printf("RESULT = %s\n", line);
@@ -34,10 +35,47 @@ int		main(int argc, char **argv)
 		printf("RESULT = %s\n", line);
 		printf("gnl = %d\n\n", gnl);
 		return (0);
-	}
-	fd = open(argv[1], O_RDONLY);
+	}*/
+	fd1 = open(argv[1], O_RDONLY);
+	fd2 = open(argv[2], O_RDONLY);
 
 	line = (char*)malloc(sizeof(char));
+	gnl = get_next_line(fd1, &line);
+	printf("RESULT = %s\n", line);
+	printf("gnl = %d\n\n", gnl);
+	free(line);
+
+	line = (char*)malloc(sizeof(char));
+	gnl = get_next_line(fd2, &line);
+	printf("RESULT = %s\n", line);
+	printf("gnl = %d\n\n", gnl);
+	free(line);
+
+	line = (char*)malloc(sizeof(char));
+	gnl = get_next_line(fd1, &line);
+	printf("RESULT = %s\n", line);
+	printf("gnl = %d\n\n", gnl);
+	free(line);
+
+	line = (char*)malloc(sizeof(char));
+	gnl = get_next_line(fd2, &line);
+	printf("RESULT = %s\n", line);
+	printf("gnl = %d\n\n", gnl);
+	free(line);
+
+	line = (char*)malloc(sizeof(char));
+	gnl = get_next_line(fd1, &line);
+	printf("RESULT = %s\n", line);
+	printf("gnl = %d\n\n", gnl);
+	free(line);
+
+	line = (char*)malloc(sizeof(char));
+	gnl = get_next_line(fd2, &line);
+	printf("RESULT = %s\n", line);
+	printf("gnl = %d\n\n", gnl);
+	free(line);
+
+	/*line = (char*)malloc(sizeof(char));
 	gnl = get_next_line(fd, &line);
 	printf("RESULT = %s\n", line);
 	printf("gnl = %d\n\n", gnl);
@@ -53,43 +91,8 @@ int		main(int argc, char **argv)
 	gnl = get_next_line(fd, &line);
 	printf("RESULT = %s\n", line);
 	printf("gnl = %d\n\n", gnl);
-	free(line);
-
-	line = (char*)malloc(sizeof(char));
-	gnl = get_next_line(fd, &line);
-	printf("RESULT = %s\n", line);
-	printf("gnl = %d\n\n", gnl);
-	free(line);
-
-	line = (char*)malloc(sizeof(char));
-	gnl = get_next_line(fd, &line);
-	printf("RESULT = %s\n", line);
-	printf("gnl = %d\n\n", gnl);
-	free(line);
-
-	line = (char*)malloc(sizeof(char));
-	gnl = get_next_line(fd, &line);
-	printf("RESULT = %s\n", line);
-	printf("gnl = %d\n\n", gnl);
-	free(line);
-
-	line = (char*)malloc(sizeof(char));
-	gnl = get_next_line(fd, &line);
-	printf("RESULT = %s\n", line);
-	printf("gnl = %d\n\n", gnl);
-	free(line);
-
-	line = (char*)malloc(sizeof(char));
-	gnl = get_next_line(fd, &line);
-	printf("RESULT = %s\n", line);
-	printf("gnl = %d\n\n", gnl);
-	free(line);
-
-	line = (char*)malloc(sizeof(char));
-	gnl = get_next_line(fd, &line);
-	printf("RESULT = %s\n", line);
-	printf("gnl = %d\n\n", gnl);
-	free(line);
+	free(line);*/
+	
 
 	return (0);
 }
