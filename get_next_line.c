@@ -70,7 +70,9 @@ int				get_next_line(const int fd, char **line)
 		if (!(str[fd] = add_buff(fd, &str[fd], &ret)))
 			return (-1);
 	}
-	if (!ret && ft_strlen(str[fd]))
+	if (!ret && *str[fd])
 		return (get_last_line(line, &str[fd]));
+	if (!ret)
+		ft_memdel((void**)&str[fd]);
 	return (0);
 }
