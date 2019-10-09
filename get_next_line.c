@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
+#include "libft/libft.h"
 
 static int		read_from_str(char **line, char **str)
 {
@@ -53,26 +53,54 @@ int				get_last_line(char **line, char **str)
 	return (1);
 }
 
+t_struct		*find_fd(t_struct **b_list, int fd)
+{
+	t_struct *ptr;
+
+	ptr = *b_list;
+	if (!ptr)
+	{
+		ptr = (t_struct *)malloc(sizeof(t_struct));
+		ptr->fd = fd;
+		ptr->str = NULL;
+		ptr->next = NULL;
+		return(ptr);
+	}
+	while (ptr)
+	{
+		if (ptr->fd == fd)
+			return (ptr);
+		ptr = ptr->next;
+	}
+	ptr = (t_struct *)malloc(sizeof(t_struct));
+	ptr->fd = fd;
+	ptr->str = NULL;
+	ptr->next = NULL;
+	return(ptr);
+}
+
 int				get_next_line(const int fd, char **line)
 {
 	int				ret;
-	static char		*str[FD_MAXSET];
+	t_struct		*current;
+	static t_struct	*list;
 
 	ret = 1;
 	if (!line || fd < 0 || BUFF_SIZE < 1 || read(fd, NULL, 0) < 0)
 		return (-1);
+	current = find_fd(&list, fd);
 	while (ret > 0)
 	{
-		if (!str[fd])
-			str[fd] = ft_strnew(0);
-		if (ft_strchr(str[fd], '\n'))
-			return (read_from_str(line, &str[fd]));
-		if (!(str[fd] = add_buff(fd, &str[fd], &ret)))
+		if (!current->str)
+			current->str = ft_strnew(0);
+		if (ft_strchr(current->str, '\n'))
+			return (read_from_str(line, &(current->str)));
+		if (!(current->str = add_buff(fd, &(current->str), &ret)))
 			return (-1);
 	}
-	if (!ret && *str[fd])
-		return (get_last_line(line, &str[fd]));
-	if (!ret)
-		ft_memdel((void**)&str[fd]);
+	if (!ret && current->str)
+		return (get_last_line(line, &(current->str)));
+	//if (!ret)
+	//	ft_memdel((void**)&(current->str));
 	return (0);
 }
