@@ -55,16 +55,18 @@ int				get_last_line(char **line, char **str)
 
 t_struct		*find_fd(t_struct **b_list, int fd)
 {
-	t_struct *ptr;
+	t_struct	*ptr;
+	t_struct	*tmp;
 
 	ptr = *b_list;
 	if (!ptr)
 	{
-		ptr = (t_struct *)malloc(sizeof(t_struct));
-		ptr->fd = fd;
-		ptr->str = NULL;
-		ptr->next = NULL;
-		return(ptr);
+		tmp = (t_struct *)malloc(sizeof(t_struct));
+		tmp->fd = fd;
+		tmp->str = NULL;
+		tmp->next = NULL;
+		*b_list = tmp;
+		return(tmp);
 	}
 	while (ptr)
 	{
@@ -72,10 +74,11 @@ t_struct		*find_fd(t_struct **b_list, int fd)
 			return (ptr);
 		ptr = ptr->next;
 	}
-	ptr = (t_struct *)malloc(sizeof(t_struct));
-	ptr->fd = fd;
-	ptr->str = NULL;
-	ptr->next = NULL;
+	tmp = (t_struct *)malloc(sizeof(t_struct));
+	tmp->fd = fd;
+	tmp->str = NULL;
+	tmp->next = NULL;
+	ptr->next
 	return(ptr);
 }
 
