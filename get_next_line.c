@@ -66,20 +66,20 @@ t_struct		*find_fd(t_struct **b_list, int fd)
 		tmp->str = NULL;
 		tmp->next = NULL;
 		*b_list = tmp;
-		return(tmp);
+		return(*b_list);
 	}
 	while (ptr)
 	{
 		if (ptr->fd == fd)
 			return (ptr);
+		tmp = ptr;
 		ptr = ptr->next;
 	}
-	tmp = (t_struct *)malloc(sizeof(t_struct));
-	tmp->fd = fd;
-	tmp->str = NULL;
-	tmp->next = NULL;
-	ptr->next
-	return(ptr);
+	tmp->next = (t_struct *)malloc(sizeof(t_struct));
+	tmp->next->fd = fd;
+	tmp->next->str = NULL;
+	tmp->next->next = NULL;
+	return(tmp->next);
 }
 
 int				get_next_line(const int fd, char **line)
@@ -103,7 +103,7 @@ int				get_next_line(const int fd, char **line)
 	}
 	if (!ret && current->str)
 		return (get_last_line(line, &(current->str)));
-	//if (!ret)
-	//	ft_memdel((void**)&(current->str));
+	if (!ret)
+		ft_memdel((void**)&(current->str));
 	return (0);
 }

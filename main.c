@@ -16,11 +16,12 @@
 int		main(int argc, char **argv)
 {
 	int		fd1;
-	int		fd2;
+	//int		fd2;
 	int		gnl;
 	char	*line;
 
-
+	if (argc < 0)
+		return (0);
 	/*if (argc == 1)
 	{
 		gnl = get_next_line(fd, &line);
